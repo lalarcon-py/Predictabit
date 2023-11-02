@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Predictabit", "Predictabit\Predictabit.csproj", "{7A291933-3B3F-4B04-AEF2-369BDEE43449}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PredictabitUI", "PredictabitUI\PredictabitUI.csproj", "{2472BEA2-A20D-4A09-83E0-7F2CBC0D2B02}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7A291933-3B3F-4B04-AEF2-369BDEE43449}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A291933-3B3F-4B04-AEF2-369BDEE43449}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A291933-3B3F-4B04-AEF2-369BDEE43449}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A291933-3B3F-4B04-AEF2-369BDEE43449}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2472BEA2-A20D-4A09-83E0-7F2CBC0D2B02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2472BEA2-A20D-4A09-83E0-7F2CBC0D2B02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2472BEA2-A20D-4A09-83E0-7F2CBC0D2B02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2472BEA2-A20D-4A09-83E0-7F2CBC0D2B02}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
