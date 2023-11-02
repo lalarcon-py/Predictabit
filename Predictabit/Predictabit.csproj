@@ -8,7 +8,7 @@
         <ProjectGuid>{7A291933-3B3F-4B04-AEF2-369BDEE43449}</ProjectGuid>
         <OutputType>Exe</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>Testing</RootNamespace>
+        <RootNamespace>Predictabit</RootNamespace>
         <AssemblyName>Predictabit</AssemblyName>
         <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>

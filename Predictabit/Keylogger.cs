@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 
-namespace Testing
+namespace Predictabit
 {
     public class Keylogger
     {

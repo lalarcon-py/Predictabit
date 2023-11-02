@@ -5,7 +5,7 @@ using System.Text;
 using Serilog;
 using Serilog.Core;
 
-namespace Testing
+namespace Predictabit
 {
     class PredictabitProgram
     {
