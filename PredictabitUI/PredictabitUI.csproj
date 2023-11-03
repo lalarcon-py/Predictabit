@@ -51,7 +51,7 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
-        <Page Include="MainWindow.xaml">
+        <Page Include="Home.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </Page>
@@ -59,8 +59,8 @@
             <DependentUpon>App.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Compile Include="MainWindow.xaml.cs">
-            <DependentUpon>MainWindow.xaml</DependentUpon>
+        <Compile Include="Home.xaml.cs">
+            <DependentUpon>Home.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
     </ItemGroup>
@@ -80,6 +80,12 @@
     </ItemGroup>
     <ItemGroup>
         <None Include="App.config"/>
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Predictabit\Predictabit.csproj">
+        <Project>{7a291933-3b3f-4b04-aef2-369bdee43449}</Project>
+        <Name>Predictabit</Name>
+      </ProjectReference>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
 </Project>
