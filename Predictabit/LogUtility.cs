@@ -7,14 +7,14 @@ namespace Predictabit
 {
     public static class LogUtility
     {
-        private static string logFileName = "keylogger.txt";
+        private const string LogFile = "keylogger.txt";
 
         public static void LogWindowChange(string windowTitle, DateTime startTime)
         {
             if (!string.IsNullOrEmpty(windowTitle))
             {
                 TimeSpan timeSpent = DateTime.Now - startTime;
-                using (StreamWriter writer = File.AppendText(logFileName))
+                using (StreamWriter writer = File.AppendText(LogFile))
                 {
                     writer.WriteLine($"Window: {windowTitle}, Time Spent: {timeSpent}");
                 }

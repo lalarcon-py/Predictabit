@@ -9,31 +9,39 @@ namespace Predictabit
 {
     class PredictabitProgram
     {
-        private static string currentWindowTitle = "";
+        private static string _currentWindowTitle = "";
         private static DateTime windowStartTime;
+        private DatabaseConnection _dbConnection;
 
-        static void Main(string[] args)
+        
+        public PredictabitProgram(DatabaseConnection dbConnection)
         {
-            string logFileName = "log.txt";
+            _dbConnection = dbConnection;
+        }
+        
+        public static void Main(string[] args)
+        {
+            DatabaseConnection dbConnection = new DatabaseConnection(); // Create an instance of DatabaseConnection
+            PredictabitProgram program = new PredictabitProgram(dbConnection); // Create an instance of PredictabitProgram
+            program.Start(args); // Call the Start method on the instance
+        }
 
-            // Check if the log file exists and create it if not
-            if (!File.Exists(logFileName))
-            {
-                using (File.Create(logFileName)) { }
-            }
-
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.File(logFileName, rollingInterval: RollingInterval.Day)
-                .CreateLogger();
-
-            string currentWindowTitle = "";
-            DateTime windowStartTime = DateTime.Now;
+        public void Start(string[] args)
+        {
+            string windowTitle = "";
+            DateTime startTime = DateTime.Now;
             bool isTyping = false;
             StringBuilder typedString = new StringBuilder();
-            
+
             // Get the current Windows user's account name
             string currentUser = WindowsIdentity.GetCurrent().Name;
-            
+
+            // Check if the user exists in the database, if not, insert the username
+            if (!_dbConnection.UserExists(currentUser))
+            {
+                _dbConnection.InsertUserName(currentUser);
+            }
+
             // Initialize last typing start time
             DateTime lastTypingStartTime = DateTime.Now;
 
@@ -41,20 +49,20 @@ namespace Predictabit
             {
                 string activeWindow = GetActiveWindowTitle();
 
-                if (activeWindow != currentWindowTitle)
+                if (activeWindow != windowTitle)
                 {
-                    LogWindowChange(currentWindowTitle, windowStartTime);
+                    LogWindowChange(windowTitle, startTime);
 
                     if (isTyping)
                     {
-                        LogTypingEvent(currentUser,typedString.ToString(), lastTypingStartTime);
+                        LogTypingEvent(currentUser, typedString.ToString(), lastTypingStartTime);
                         isTyping = false;
                         typedString.Clear();
                     }
 
                     // Update the current window and start time
-                    currentWindowTitle = activeWindow;
-                    windowStartTime = DateTime.Now;
+                    windowTitle = activeWindow;
+                    startTime = DateTime.Now;
                 }
 
                 if (Console.KeyAvailable)

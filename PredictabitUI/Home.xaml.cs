@@ -10,10 +10,12 @@ namespace PredictabitUI
     /// </summary>
     public partial class Home
     {
-        private Keylogger _keyLogger = new Keylogger();
+        private DatabaseConnection _dbConnection = new DatabaseConnection();
+        private Keylogger _keyLogger;
         public Home()
         {
             InitializeComponent();
+            _keyLogger = new Keylogger(_dbConnection);
             _keyLogger.StartKeyLogging();
         }
         
